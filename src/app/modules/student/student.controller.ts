@@ -1,53 +1,45 @@
-import { Request, Response } from 'express';
 import { StudentServices } from './student.service';
+import sendResponse from '../../utils/sendResponse';
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const createStudent = async (req: Request, res: Response) => {
-  try {
-    const { student: studentData } = req.body;
-    const result = await StudentServices.createStudentIntoDB(studentData);
+const getAllStudents = catchAsync(async (req, res) => {
+  const result = await StudentServices.getAllStudentsFromDB();
 
-    res.status(200).json({
-      success: true,
-      message: 'Student is created successfully',
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Students are retrieved successfully',
+    data: result,
+  });
+});
 
-const getAllStudents = async (req: Request, res: Response) => {
-  try {
-    const result = await StudentServices.getAllStudentsFromDB();
+const getSingleStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.getSingleStudentFromDB(studentId);
 
-    res.status(200).json({
-      success: true,
-      message: 'Students are retrieved successfully',
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student is retrieved successfully',
+    data: result,
+  });
+});
 
-const getSingleStudent = async (req: Request, res: Response) => {
-  try {
-    const { studentId } = req.params;
+const deleteStudent = catchAsync(async (req, res) => {
+  const { studentId } = req.params;
+  const result = await StudentServices.deleteStudentFromDB(studentId);
 
-    const result = await StudentServices.getSingleStudentFromDB(studentId);
-
-    res.status(200).json({
-      success: true,
-      message: 'Single student is retrieved successfully',
-      data: result,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student is deleted successfully',
+    data: result,
+  });
+});
 
 export const StudentControllers = {
-  createStudent,
   getAllStudents,
   getSingleStudent,
+  deleteStudent,
 };
