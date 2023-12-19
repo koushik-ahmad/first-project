@@ -32,7 +32,7 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
 // get single Academic semester
 const getSingleAcademicSemester = catchAsync(async (req, res) => {
   const { semesterId } = req.params;
-  const result =
+  const result = await
     AcademicSemesterServices.getSingleAcademicSemesterFromDB(semesterId);
 
   sendResponse(res, {

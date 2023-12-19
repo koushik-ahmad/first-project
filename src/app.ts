@@ -17,7 +17,7 @@ app.use(express.json());
 // application routes
 app.use('/api/v1', router);
 
-const test = (req: Request, res: Response) => {
+const test = async (req: Request, res: Response) => {
   res.status(200).json({
     status: 'success',
     message: 'Server is running on port: 5000',
