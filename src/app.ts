@@ -8,11 +8,14 @@ import { UserRoutes } from './app/modules/user/user.route';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
+import cookieParser from 'cookie-parser';
+
 const app: Application = express();
 
 // parsers
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: ['http://localhost:5173'] }));
 
 // application routes
 app.use('/api/v1', router);
